@@ -1,0 +1,5 @@
+name = MixFix
+description = Custom tweaks and fixes.
+package = "Custom"
+version = 1.0
+core = 7.x

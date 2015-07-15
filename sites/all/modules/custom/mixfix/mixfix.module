@@ -1,0 +1,44 @@
+<?php
+/*
+ * hook views pre render
+ */
+function mixfix_views_pre_render(&$view) {
+
+	if ($view->name == 'photo_gallery') {
+		if (in_array('ajax', arg())) {
+// 			$ax = get_object_vars($view);
+// 			$bx = array_keys($ax);
+// 			print_r( $bx);die;
+
+			$response = array('items' => array());			
+			foreach ($view->result as $row) {
+				$img_style = $row->field_field_foto_img[0]['rendered']['#image_style'];
+				$img_uri = $row->field_field_foto_img[0]['rendered']['#item']['uri'];
+				$img_url = image_style_url($img_style, $img_uri);
+				//$img_url = $row->field_field_foto_img[0]['rendered']
+				$response['items'][] = array(
+					'img_url' => $img_url,
+					'title' => check_plain($row->_field_data['nid']['entity']->title)
+				);
+			}
+			drupal_json_output($response);
+			exit;
+
+		}
+		// modify $view->result per whatever logic you require
+
+	}
+
+}
+
+/*
+ * hook init
+ */
+function mixfix_init(){
+}
+
+/*
+ * hook form alter
+*/
+function mixfix_form_alter(&$form, &$form_state, $form_id) {
+}
